@@ -226,12 +226,7 @@ def login_page():
     st.markdown("""
     <div class="login-wrapper">
 
-        <div class="sophos-logo">SOPHOS</div>
-
-        <div class="system-name">
-            ANOMALY DETECTION SYSTEM
-        </div>
-
+     
        
     """, unsafe_allow_html=True)
 
