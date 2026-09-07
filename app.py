@@ -2,78 +2,149 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# =========================================================
-# PAGE CONFIGURATION
-# =========================================================
+# ==========================================================
+# PAGE CONFIG
+# ==========================================================
 
 st.set_page_config(
-    page_title="Sophos Network Security Monitor",
+    page_title="Sophos Security Intelligence",
     page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-
-# =========================================================
+# ==========================================================
 # CUSTOM CSS
-# =========================================================
+# ==========================================================
 
 st.markdown("""
 <style>
 
-.main {
-    background-color: #f5f7fa;
+body {
+    background-color: #0b1120;
+}
+
+.stApp {
+    background-color: #0b1120;
+    color: #e5e7eb;
 }
 
 .block-container {
     padding-top: 2rem;
+    padding-bottom: 3rem;
+    max-width: 1400px;
 }
 
-.dashboard-title {
-    font-size: 36px;
+/* Header */
+
+.header {
+    padding: 10px 0 25px 0;
+}
+
+.header h1 {
+    font-size: 34px;
+    margin-bottom: 3px;
+    color: #f8fafc;
+}
+
+.header p {
+    color: #94a3b8;
+    font-size: 15px;
+}
+
+/* Cards */
+
+.card {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 12px;
+    padding: 22px;
+    min-height: 125px;
+}
+
+.card-title {
+    color: #94a3b8;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-value {
+    color: #f8fafc;
+    font-size: 30px;
     font-weight: 700;
-    margin-bottom: 5px;
+    margin-top: 8px;
 }
 
-.dashboard-subtitle {
-    font-size: 17px;
-    color: #666;
-    margin-bottom: 25px;
+.card-description {
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 4px;
 }
 
-.status-normal {
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 22px;
+/* Threat panel */
+
+.threat-panel {
+    background: #111827;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 25px;
+    margin: 10px 0 25px 0;
+}
+
+.threat-title {
+    color: #94a3b8;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.threat-status {
+    font-size: 28px;
     font-weight: 700;
-    background-color: #e8f5e9;
-    border: 2px solid #4caf50;
+    margin-top: 8px;
 }
 
-.status-anomaly {
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: 700;
-    background-color: #ffebee;
-    border: 2px solid #f44336;
+.threat-message {
+    color: #94a3b8;
+    margin-top: 7px;
+    font-size: 14px;
 }
 
-.section-title {
-    font-size: 24px;
+/* Section titles */
+
+.section {
+    color: #f8fafc;
+    font-size: 20px;
     font-weight: 600;
-    margin-top: 25px;
+    margin: 30px 0 12px 0;
+}
+
+/* Info */
+
+.info-panel {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+/* Footer */
+
+.footer {
+    text-align: center;
+    color: #64748b;
+    padding-top: 30px;
+    font-size: 12px;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 
-# =========================================================
+# ==========================================================
 # LOAD MODEL
-# =========================================================
+# ==========================================================
 
 try:
 
@@ -83,117 +154,151 @@ try:
 
 except Exception as e:
 
-    st.error("❌ Unable to load the machine learning model.")
-
-    st.write("Error:", e)
-
+    st.error("Machine learning model could not be loaded.")
+    st.code(str(e))
     st.stop()
 
 
-# =========================================================
+# ==========================================================
 # SIDEBAR
-# =========================================================
+# ==========================================================
 
 with st.sidebar:
 
-    st.header("🛡️ System Control")
+    st.markdown("## 🛡️ Security Center")
 
-    st.write("### Upload Firewall Data")
+    st.caption("Sophos Network Intelligence")
+
+    st.divider()
 
     uploaded_file = st.file_uploader(
-        "Select Sophos CSV file",
+        "Upload firewall traffic",
         type=["csv"]
     )
 
     st.divider()
 
-    st.write("### About the System")
+    st.markdown("### Detection Engine")
 
-    st.info(
-        """
-        This system uses **Isolation Forest**
-        to detect unusual network traffic
-        from Sophos firewall data.
+    st.write("**Algorithm**")
+    st.write("Isolation Forest")
 
-        The system uses **unsupervised machine
-        learning**, therefore anomaly labels are
-        not required.
-        """
-    )
+    st.write("**Learning Type**")
+    st.write("Unsupervised Learning")
+
+    st.write("**Purpose**")
+    st.write("Network anomaly detection")
 
     st.divider()
 
-    st.write("**Model:** Isolation Forest")
-
-    st.write("**Learning:** Unsupervised")
-
-    st.write("**Data Source:** Sophos Firewall Logs")
+    st.caption("Security Analytics Platform")
 
 
-# =========================================================
+# ==========================================================
 # HEADER
-# =========================================================
+# ==========================================================
 
-st.markdown(
-    '<div class="dashboard-title">🛡️ Sophos Network Security Monitor</div>',
-    unsafe_allow_html=True
-)
+st.markdown("""
+<div class="header">
 
-st.markdown(
-    '<div class="dashboard-subtitle">'
-    'Machine Learning-Based Network Anomaly Detection System'
-    '</div>',
-    unsafe_allow_html=True
-)
+<h1>🛡️ Sophos Security Intelligence</h1>
+
+<p>
+Network traffic monitoring, behavioral analysis and
+machine-learning-based anomaly detection
+</p>
+
+</div>
+""", unsafe_allow_html=True)
 
 
-# =========================================================
-# WAIT FOR FILE
-# =========================================================
+# ==========================================================
+# NO FILE
+# ==========================================================
 
 if uploaded_file is None:
 
-    st.info(
-        "👈 Upload a Sophos firewall CSV file from the sidebar "
-        "to start anomaly detection."
-    )
+    st.markdown("""
+    <div class="info-panel">
 
-    st.markdown("### How the system works")
+    <h3>Security Monitoring Console</h3>
+
+    <p style="color:#94a3b8;">
+    Upload a Sophos firewall traffic dataset to initiate
+    behavioral analysis and identify network activity that
+    deviates from the learned baseline.
+    </p>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown(
+        '<div class="section">Detection Workflow</div>',
+        unsafe_allow_html=True
+    )
 
     col1, col2, col3 = st.columns(3)
 
     with col1:
 
-        st.markdown("### 1️⃣ Upload")
+        st.markdown("""
+        <div class="card">
 
-        st.write(
-            "Upload your Sophos firewall traffic CSV file."
-        )
+        <div class="card-title">01 — Ingestion</div>
+
+        <div style="font-size:22px;margin-top:10px;">
+        📂 Traffic Data
+        </div>
+
+        <div class="card-description">
+        Import Sophos firewall traffic records.
+        </div>
+
+        </div>
+        """, unsafe_allow_html=True)
 
     with col2:
 
-        st.markdown("### 2️⃣ Analyze")
+        st.markdown("""
+        <div class="card">
 
-        st.write(
-            "The trained Isolation Forest model analyzes "
-            "the network traffic."
-        )
+        <div class="card-title">02 — Analysis</div>
+
+        <div style="font-size:22px;margin-top:10px;">
+        🧠 Behavioral Model
+        </div>
+
+        <div class="card-description">
+        Analyze network behavior using machine learning.
+        </div>
+
+        </div>
+        """, unsafe_allow_html=True)
 
     with col3:
 
-        st.markdown("### 3️⃣ Detect")
+        st.markdown("""
+        <div class="card">
 
-        st.write(
-            "The system identifies normal and unusual "
-            "network activities."
-        )
+        <div class="card-title">03 — Detection</div>
+
+        <div style="font-size:22px;margin-top:10px;">
+        🚨 Security Events
+        </div>
+
+        <div class="card-description">
+        Identify traffic patterns that appear unusual.
+        </div>
+
+        </div>
+        """, unsafe_allow_html=True)
 
     st.stop()
 
 
-# =========================================================
+# ==========================================================
 # READ DATA
-# =========================================================
+# ==========================================================
 
 try:
 
@@ -201,61 +306,14 @@ try:
 
 except Exception as e:
 
-    st.error("❌ Failed to read the CSV file.")
-
-    st.write(e)
-
+    st.error("Unable to read the uploaded CSV.")
+    st.code(str(e))
     st.stop()
 
 
-# =========================================================
-# DATA INFORMATION
-# =========================================================
-
-st.markdown(
-    '<div class="section-title">📊 Network Traffic Overview</div>',
-    unsafe_allow_html=True
-)
-
-
-col1, col2, col3, col4 = st.columns(4)
-
-
-with col1:
-
-    st.metric(
-        "Total Records",
-        f"{len(df):,}"
-    )
-
-
-with col2:
-
-    st.metric(
-        "Total Columns",
-        f"{len(df.columns):,}"
-    )
-
-
-with col3:
-
-    st.metric(
-        "Model Features",
-        f"{len(features):,}"
-    )
-
-
-with col4:
-
-    st.metric(
-        "Detection Method",
-        "Isolation Forest"
-    )
-
-
-# =========================================================
+# ==========================================================
 # CHECK FEATURES
-# =========================================================
+# ==========================================================
 
 missing_features = [
     feature
@@ -263,33 +321,25 @@ missing_features = [
     if feature not in df.columns
 ]
 
-
 if missing_features:
 
-    st.error(
-        "❌ The uploaded file does not contain all "
-        "features required by the trained model."
-    )
+    st.error("The uploaded dataset is incompatible with the trained model.")
 
-    st.write("Missing features:")
+    st.write("Missing model features:")
 
-    st.write(missing_features)
+    for feature in missing_features:
+        st.write(f"• {feature}")
 
     st.stop()
 
 
-# =========================================================
-# PREPARE DATA
-# =========================================================
+# ==========================================================
+# PREPROCESSING
+# ==========================================================
 
 X = df[features].copy()
 
 X = X.fillna(X.median())
-
-
-# =========================================================
-# SCALE DATA
-# =========================================================
 
 try:
 
@@ -297,263 +347,296 @@ try:
 
 except Exception as e:
 
-    st.error(
-        "❌ Error while preprocessing the uploaded data."
-    )
-
-    st.write(e)
-
+    st.error("Data preprocessing failed.")
+    st.code(str(e))
     st.stop()
 
 
-# =========================================================
-# MACHINE LEARNING PREDICTION
-# =========================================================
+# ==========================================================
+# PREDICTION
+# ==========================================================
 
 predictions = model.predict(X_scaled)
 
-anomaly_scores = model.decision_function(X_scaled)
+scores = model.decision_function(X_scaled)
+
+df["Status"] = predictions.map({
+    1: "NORMAL",
+    -1: "ANOMALY"
+})
+
+df["Anomaly_Score"] = scores
 
 
-# =========================================================
-# ADD RESULTS
-# =========================================================
+# ==========================================================
+# STATISTICS
+# ==========================================================
 
-df["Prediction"] = predictions
+total = len(df)
 
-df["Status"] = df["Prediction"].map(
-    {
-        1: "Normal",
-        -1: "Anomaly"
-    }
-)
+normal = (df["Status"] == "NORMAL").sum()
 
-df["Anomaly_Score"] = anomaly_scores
+anomaly = (df["Status"] == "ANOMALY").sum()
 
-
-# =========================================================
-# CALCULATE COUNTS
-# =========================================================
-
-total_records = len(df)
-
-normal_count = (
-    df["Status"] == "Normal"
-).sum()
-
-anomaly_count = (
-    df["Status"] == "Anomaly"
-).sum()
+if total > 0:
+    anomaly_rate = anomaly / total * 100
+else:
+    anomaly_rate = 0
 
 
-if total_records > 0:
+# ==========================================================
+# THREAT LEVEL
+# ==========================================================
 
-    anomaly_percentage = (
-        anomaly_count / total_records
-    ) * 100
+if anomaly_rate == 0:
+
+    threat_level = "LOW"
+    threat_color = "#22c55e"
+    threat_message = "No anomalous traffic detected in the analyzed dataset."
+
+elif anomaly_rate < 5:
+
+    threat_level = "GUARDED"
+    threat_color = "#eab308"
+    threat_message = "Limited unusual network activity detected."
+
+elif anomaly_rate < 10:
+
+    threat_level = "ELEVATED"
+    threat_color = "#f97316"
+    threat_message = "An increased level of unusual network activity was detected."
 
 else:
 
-    anomaly_percentage = 0
+    threat_level = "HIGH"
+    threat_color = "#ef4444"
+    threat_message = "Significant anomalous network activity requires investigation."
 
 
-# =========================================================
-# SECURITY STATUS
-# =========================================================
+# ==========================================================
+# THREAT STATUS
+# ==========================================================
 
-st.markdown(
-    '<div class="section-title">🚨 Security Status</div>',
-    unsafe_allow_html=True
-)
+st.markdown(f"""
+<div class="threat-panel">
 
+<div class="threat-title">
+CURRENT SECURITY POSTURE
+</div>
 
-if anomaly_count > 0:
+<div class="threat-status" style="color:{threat_color};">
+● {threat_level}
+</div>
 
-    st.markdown(
-        f"""
-        <div class="status-anomaly">
-        🚨 ANOMALY DETECTED<br>
-        <span style="font-size:16px;">
-        {anomaly_count:,} unusual network records detected
-        </span>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+<div class="threat-message">
+{threat_message}
+</div>
 
-else:
-
-    st.markdown(
-        """
-        <div class="status-normal">
-        🟢 NO ANOMALY DETECTED<br>
-        <span style="font-size:16px;">
-        All analyzed network records appear normal
-        </span>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+</div>
+""", unsafe_allow_html=True)
 
 
-# =========================================================
-# MAIN METRICS
-# =========================================================
-
-st.markdown(
-    '<div class="section-title">📈 Detection Summary</div>',
-    unsafe_allow_html=True
-)
-
+# ==========================================================
+# KPI CARDS
+# ==========================================================
 
 col1, col2, col3, col4 = st.columns(4)
 
 
 with col1:
 
-    st.metric(
-        "Total Traffic",
-        f"{total_records:,}"
-    )
+    st.markdown(f"""
+    <div class="card">
+
+    <div class="card-title">
+    Traffic Monitored
+    </div>
+
+    <div class="card-value">
+    {total:,}
+    </div>
+
+    <div class="card-description">
+    Network records analyzed
+    </div>
+
+    </div>
+    """, unsafe_allow_html=True)
 
 
 with col2:
 
-    st.metric(
-        "🟢 Normal",
-        f"{normal_count:,}"
-    )
+    st.markdown(f"""
+    <div class="card">
+
+    <div class="card-title">
+    Normal Traffic
+    </div>
+
+    <div class="card-value" style="color:#22c55e;">
+    {normal:,}
+    </div>
+
+    <div class="card-description">
+    Expected behavioral patterns
+    </div>
+
+    </div>
+    """, unsafe_allow_html=True)
 
 
 with col3:
 
-    st.metric(
-        "🔴 Anomalies",
-        f"{anomaly_count:,}"
-    )
+    st.markdown(f"""
+    <div class="card">
+
+    <div class="card-title">
+    Anomalies
+    </div>
+
+    <div class="card-value" style="color:#ef4444;">
+    {anomaly:,}
+    </div>
+
+    <div class="card-description">
+    Unusual behavioral patterns
+    </div>
+
+    </div>
+    """, unsafe_allow_html=True)
 
 
 with col4:
 
-    st.metric(
-        "Anomaly Rate",
-        f"{anomaly_percentage:.2f}%"
-    )
+    st.markdown(f"""
+    <div class="card">
+
+    <div class="card-title">
+    Anomaly Rate
+    </div>
+
+    <div class="card-value">
+    {anomaly_rate:.2f}%
+    </div>
+
+    <div class="card-description">
+    Percentage of traffic classified as unusual
+    </div>
+
+    </div>
+    """, unsafe_allow_html=True)
 
 
-# =========================================================
-# CHART
-# =========================================================
+# ==========================================================
+# TRAFFIC ANALYSIS
+# ==========================================================
 
 st.markdown(
-    '<div class="section-title">📊 Normal vs Anomaly Traffic</div>',
+    '<div class="section">Traffic Behavior Analysis</div>',
     unsafe_allow_html=True
 )
 
+chart_data = pd.DataFrame({
+    "Status": ["NORMAL", "ANOMALY"],
+    "Records": [normal, anomaly]
+})
 
-chart_data = pd.DataFrame(
-    {
-        "Traffic Status": [
-            "Normal",
-            "Anomaly"
-        ],
-        "Records": [
-            normal_count,
-            anomaly_count
-        ]
-    }
+st.bar_chart(
+    chart_data.set_index("Status")
 )
 
-chart_data = chart_data.set_index(
-    "Traffic Status"
-)
 
-st.bar_chart(chart_data)
-
-
-# =========================================================
-# ANOMALY RECORDS
-# =========================================================
+# ==========================================================
+# ANOMALY SCORE
+# ==========================================================
 
 st.markdown(
-    '<div class="section-title">🚨 Detected Anomalies</div>',
+    '<div class="section">Anomaly Score Distribution</div>',
     unsafe_allow_html=True
 )
 
+score_data = pd.DataFrame({
+    "Anomaly Score": df["Anomaly_Score"]
+})
 
-anomalies = df[
-    df["Status"] == "Anomaly"
-]
+st.line_chart(score_data)
 
 
-if anomaly_count > 0:
+# ==========================================================
+# SECURITY EVENTS
+# ==========================================================
+
+st.markdown(
+    '<div class="section">Detected Security Events</div>',
+    unsafe_allow_html=True
+)
+
+anomalies = df[df["Status"] == "ANOMALY"].copy()
+
+
+if len(anomalies) > 0:
 
     st.warning(
-        f"⚠️ The model identified {anomaly_count:,} "
-        "records as unusual."
+        f"{len(anomalies):,} anomalous traffic records identified."
     )
 
     st.dataframe(
         anomalies,
         use_container_width=True,
-        height=400
+        height=420
     )
 
 else:
 
     st.success(
-        "🟢 No unusual network activity was detected."
+        "No anomalous traffic records were identified."
     )
 
 
-# =========================================================
-# ALL RESULTS
-# =========================================================
+# ==========================================================
+# COMPLETE RESULTS
+# ==========================================================
 
-st.markdown(
-    '<div class="section-title">📋 Complete Detection Results</div>',
-    unsafe_allow_html=True
-)
+with st.expander("View Complete Traffic Analysis"):
 
-
-st.dataframe(
-    df,
-    use_container_width=True,
-    height=400
-)
+    st.dataframe(
+        df,
+        use_container_width=True,
+        height=400
+    )
 
 
-# =========================================================
+# ==========================================================
 # DOWNLOAD
-# =========================================================
+# ==========================================================
 
 st.markdown(
-    '<div class="section-title">📥 Export Results</div>',
+    '<div class="section">Export Security Report</div>',
     unsafe_allow_html=True
 )
 
-
-results_csv = df.to_csv(
-    index=False
-)
-
+csv = df.to_csv(index=False)
 
 st.download_button(
-    label="⬇️ Download Anomaly Detection Results",
-    data=results_csv,
-    file_name="sophos_anomaly_results.csv",
+    label="⬇️ Download Detection Report",
+    data=csv,
+    file_name="sophos_security_detection_report.csv",
     mime="text/csv"
 )
 
 
-# =========================================================
+# ==========================================================
 # FOOTER
-# =========================================================
+# ==========================================================
 
-st.divider()
+st.markdown("""
+<div class="footer">
 
-st.caption(
-    "Sophos Network Security Monitor | "
-    "Machine Learning: Isolation Forest | "
-    "Unsupervised Anomaly Detection"
-)
+Sophos Security Intelligence Platform
+&nbsp; • &nbsp;
+Isolation Forest
+&nbsp; • &nbsp;
+Unsupervised Network Anomaly Detection
+
+</div>
+""", unsafe_allow_html=True)
