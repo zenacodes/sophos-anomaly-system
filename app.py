@@ -232,14 +232,7 @@ def login_page():
             ANOMALY DETECTION SYSTEM
         </div>
 
-        <div class="login-description">
-            An intelligent network security platform designed to
-            analyze firewall traffic, identify abnormal behavioral
-            patterns and support proactive network security monitoring
-            using unsupervised machine learning.
-        </div>
-
-    </div>
+       
     """, unsafe_allow_html=True)
 
     st.markdown('<div class="login-box">', unsafe_allow_html=True)
